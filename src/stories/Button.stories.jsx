@@ -1,4 +1,6 @@
 import { Button } from './Button';
+import { expect } from '@storybook/jest';
+import { within, userEvent } from '@storybook/testing-library';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 export default {
@@ -36,4 +38,14 @@ export const Small = {
     size: 'small',
     label: 'Button',
   },
+};
+
+const Template = (args) => (<Button {...args} label={'DEMO'}/>);
+
+export const Demo = Template.bind({});
+
+Demo.play = async ({ args, canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole('button'));
+  await expect(args.onClick).toHaveBeenCalled();
 };
